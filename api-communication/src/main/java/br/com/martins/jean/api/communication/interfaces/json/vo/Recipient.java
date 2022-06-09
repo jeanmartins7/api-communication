@@ -8,6 +8,7 @@ public class Recipient {
     @NotNull
     private ContactType contactType;
     @NotNull
-    private Communication communicationType;
+    private DeviceCommunication deviceCommunication;
 
 }
+

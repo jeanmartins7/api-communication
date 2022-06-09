@@ -1,0 +1,20 @@
+server:
+  port: ${SERVER_PORT:8090}
+  servlet:
+    context-path: /communication
+
+spring:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:15432/api-communication
+    username: api-communication
+    password: api-communication
+    driverClassName: org.postgresql.Driver
+  liquibase:
+    enabled: true
+    change-log: classpath:/liquibase/changelog-master.xml
+  sql:
+    init:
+      platform: postgres

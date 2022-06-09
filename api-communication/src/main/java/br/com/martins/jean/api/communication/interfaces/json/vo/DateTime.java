@@ -2,10 +2,13 @@ package br.com.martins.jean.api.communication.interfaces.json.vo;
 
 import org.jetbrains.annotations.NotNull;
 
-public class Date {
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+public class DateTime {
 
     @NotNull
-    private String date;
+    private LocalDate date;
     @NotNull
-    private String hours;
+    private LocalTime time;
 }

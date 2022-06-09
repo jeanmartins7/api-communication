@@ -10,7 +10,6 @@ import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping(path = "/communications")
 public class CommunicationController {
 
     private final CommunicationService communicationService;

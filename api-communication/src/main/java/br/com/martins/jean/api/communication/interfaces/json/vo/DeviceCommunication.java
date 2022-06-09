@@ -2,7 +2,7 @@ package br.com.martins.jean.api.communication.interfaces.json.vo;
 
 import lombok.Data;
 
-public class Communication {
+public class DeviceCommunication {
 
     private String email;
 
