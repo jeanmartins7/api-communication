@@ -1,9 +1,10 @@
 package br.com.martins.jean.api.communication.services.impl;
 
 import br.com.martins.jean.api.communication.domain.CommunicationDomain;
+import br.com.martins.jean.api.communication.enumerators.StatusEnum;
 import br.com.martins.jean.api.communication.exceptions.MessageError;
 import br.com.martins.jean.api.communication.interfaces.json.request.CommunicationRequest;
-import br.com.martins.jean.api.communication.interfaces.json.response.CommunicationResponse;
+import br.com.martins.jean.api.communication.interfaces.json.response.StatusResponse;
 import br.com.martins.jean.api.communication.repository.CommunicationRepository;
 import br.com.martins.jean.api.communication.services.CommunicationService;
 import lombok.RequiredArgsConstructor;
@@ -21,12 +22,12 @@ public class CommunicationServiceImpl implements CommunicationService {
 
 
     @Override
-    public CommunicationResponse getStatusCommunication(UUID id) {
+    public StatusResponse getStatusCommunication(UUID id) {
         log.info("Getting status for =[{}]", id);
 
        CommunicationDomain communicationDomain = getCommunicationDomain(id);
 
-        return CommunicationResponse.builder()
+        return StatusResponse.builder()
               .status(communicationDomain.getStatus())
                 .build();
     }
@@ -40,11 +41,28 @@ public class CommunicationServiceImpl implements CommunicationService {
     @Override
     public void deleteCommunication(UUID id) {
         log.info("DELETE communication");
+
+        CommunicationDomain communicationDomain = getCommunicationDomain(id);
+
+        validateStatus(communicationDomain);
+
+        communicationDomain.setStatus(StatusEnum.CANCELLED);
+
+        communicationRepository.save(communicationDomain);
+
     }
 
     public CommunicationDomain getCommunicationDomain(final UUID id) {
       return communicationRepository.findById(id.toString())
             .orElseThrow(() -> new IllegalArgumentException("CommunicationDomain not found by: " +  id));
+    }
+
+    private void validateStatus(CommunicationDomain communicationDomain) {
+        if (StatusEnum.CANCELLED.equals(communicationDomain.getStatus())){
+            log.info("Communications already {}", StatusEnum.CANCELLED);
+            throw new IllegalArgumentException("Communications already CANCELLED for id =[{}] " +  communicationDomain.getId());
+        }
+
     }
 
 

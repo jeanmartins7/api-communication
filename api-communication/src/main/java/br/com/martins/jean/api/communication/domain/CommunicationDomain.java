@@ -1,17 +1,15 @@
 package br.com.martins.jean.api.communication.domain;
 
 
-import br.com.martins.jean.api.communication.enumerators.ContactType;
-import br.com.martins.jean.api.communication.enumerators.Status;
+import br.com.martins.jean.api.communication.enumerators.ContactTypeEnum;
+import br.com.martins.jean.api.communication.enumerators.StatusEnum;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
-import java.util.UUID;
 
 @Data
 @Builder
@@ -33,7 +31,7 @@ public class CommunicationDomain extends AuditDomain{
 
     @Column(name = "tx_contact_type")
     @Enumerated(EnumType.STRING)
-    private ContactType contactType;
+    private ContactTypeEnum contactTypeEnum;
 
     @Column(name = "tx_device_communication")
     private String deviceCommunication;
@@ -46,7 +44,7 @@ public class CommunicationDomain extends AuditDomain{
 
     @Column(name = "tx_status")
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private StatusEnum status;
 
     @Override
     public boolean equals(Object o) {

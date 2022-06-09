@@ -2,6 +2,7 @@ package br.com.martins.jean.api.communication.interfaces.controller;
 
 import br.com.martins.jean.api.communication.interfaces.json.request.CommunicationRequest;
 import br.com.martins.jean.api.communication.interfaces.json.response.CommunicationResponse;
+import br.com.martins.jean.api.communication.interfaces.json.response.StatusResponse;
 import br.com.martins.jean.api.communication.services.CommunicationService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
@@ -19,7 +20,7 @@ public class CommunicationController {
 
     private final CommunicationService communicationService;
     @GetMapping("/{id}")
-    CommunicationResponse findById(@PathVariable UUID id) {
+    StatusResponse findById(@PathVariable UUID id) {
         return communicationService.getStatusCommunication(id);
     }
 

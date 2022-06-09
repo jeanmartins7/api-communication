@@ -10,8 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommunicationResponse {
+public class StatusResponse {
 
-    private StatusEnum statusEnum;
-
+    private StatusEnum status;
 }
