@@ -2,10 +2,9 @@ package br.com.martins.jean.api.communication.domain;
 
 
 import br.com.martins.jean.api.communication.enumerators.ContactType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import br.com.martins.jean.api.communication.enumerators.Status;
+import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -24,8 +23,10 @@ public class CommunicationDomain extends AuditDomain{
 
     @Id
     @Column(name = "tx_id_communication")
-    @Type(type = "uuid-char")
-    private UUID id;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @EqualsAndHashCode.Include
+    private String id;
 
     @Column(name = "tx_message")
     private String message;
@@ -42,6 +43,10 @@ public class CommunicationDomain extends AuditDomain{
 
     @Column(name = "tx_time")
     private LocalTime time;
+
+    @Column(name = "tx_status")
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @Override
     public boolean equals(Object o) {

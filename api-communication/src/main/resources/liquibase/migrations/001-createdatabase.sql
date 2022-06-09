@@ -6,6 +6,7 @@ create table tab_communications
     tx_message                varchar(255),
     tx_contact_type           varchar(255),
     tx_device_communication   varchar(255),
+    tx_status                 varchar(255),
     tx_date                   date,
     tx_time                   time,
     primary key (tx_id_communication)

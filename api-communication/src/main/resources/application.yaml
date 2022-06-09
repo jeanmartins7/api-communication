@@ -1,7 +1,7 @@
 server:
   port: ${SERVER_PORT:8090}
   servlet:
-    context-path: /communication
+    context-path: /api
 
 spring:
   jpa:
@@ -18,3 +18,8 @@ spring:
   sql:
     init:
       platform: postgres
+logging:
+  level:
+    root: ${LOGGING_LEVEL_ROOT:INFO}
+  pattern:
+    console: "[%thread][%highlight(%-5level)][%cyan(%d{yyyy-MM-dd HH:mm:ss})][%yellow(%X{requestId})][%magenta(%logger{40})] - %msg%n"
