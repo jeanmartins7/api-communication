@@ -3,13 +3,15 @@ package br.com.martins.jean.api.communication.domain;
 
 import br.com.martins.jean.api.communication.enumerators.ContactTypeEnum;
 import br.com.martins.jean.api.communication.enumerators.StatusEnum;
+import br.com.martins.jean.api.communication.interfaces.json.request.CommunicationRequest;
+import br.com.martins.jean.api.communication.interfaces.json.response.StatusResponse;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Objects;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -46,17 +48,21 @@ public class CommunicationDomain extends AuditDomain{
     @Enumerated(EnumType.STRING)
     private StatusEnum status;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CommunicationDomain)) return false;
-        if (!super.equals(o)) return false;
-        CommunicationDomain that = (CommunicationDomain) o;
-        return getId().equals(that.getId());
+    public static CommunicationDomain toCommunicationDomain(CommunicationRequest communicationRequest){
+        return CommunicationDomain.builder()
+                .id(UUID.randomUUID().toString())
+                .message(communicationRequest.getMessage())
+                .contactTypeEnum(communicationRequest.getRecipient().getContactTypeEnum())
+                .deviceCommunication(communicationRequest.getRecipient().getDeviceCommunication())
+                .date(communicationRequest.getDateTime().getDate())
+                .time(communicationRequest.getDateTime().getTime())
+                .status(StatusEnum.SEND)
+                .build();
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), getId());
+    public static StatusResponse toStatusResponse(StatusEnum status){
+        return StatusResponse.builder()
+                .status(status)
+                .build();
     }
 }

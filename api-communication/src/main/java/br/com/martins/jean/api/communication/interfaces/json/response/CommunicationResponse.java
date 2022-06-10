@@ -12,6 +12,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CommunicationResponse {
 
-    private StatusEnum statusEnum;
+    private String id;
+
+    public static CommunicationResponse toCommunicationResponse(String id){
+        return CommunicationResponse.builder()
+                .id(id)
+                .build();
+    }
 
 }

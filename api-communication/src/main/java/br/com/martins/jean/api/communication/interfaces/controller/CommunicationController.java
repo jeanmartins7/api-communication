@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+import static org.springframework.http.ResponseEntity.ok;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping(value = "/communications",
@@ -25,11 +27,11 @@ public class CommunicationController {
     }
 
     @PostMapping
-    public ResponseEntity<Void>postCommunication(@RequestBody CommunicationRequest communicationRequest){
+    public ResponseEntity<CommunicationResponse>postCommunication(@RequestBody CommunicationRequest communicationRequest){
 
-        communicationService.postCommunication(communicationRequest);
+        CommunicationResponse communicationResponse = communicationService.postCommunication(communicationRequest);
 
-        return null;
+        return ok(communicationResponse);
     }
 
     @DeleteMapping("/{id}")

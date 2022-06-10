@@ -4,6 +4,7 @@ import br.com.martins.jean.api.communication.domain.CommunicationDomain;
 import br.com.martins.jean.api.communication.enumerators.StatusEnum;
 import br.com.martins.jean.api.communication.exceptions.MessageError;
 import br.com.martins.jean.api.communication.interfaces.json.request.CommunicationRequest;
+import br.com.martins.jean.api.communication.interfaces.json.response.CommunicationResponse;
 import br.com.martins.jean.api.communication.interfaces.json.response.StatusResponse;
 import br.com.martins.jean.api.communication.repository.CommunicationRepository;
 import br.com.martins.jean.api.communication.services.CommunicationService;
@@ -20,21 +21,21 @@ public class CommunicationServiceImpl implements CommunicationService {
     private final CommunicationRepository communicationRepository;
     private final MessageError messageError;
 
-
     @Override
     public StatusResponse getStatusCommunication(UUID id) {
-        log.info("Getting status for =[{}]", id);
-
-       CommunicationDomain communicationDomain = getCommunicationDomain(id);
-
-        return StatusResponse.builder()
-              .status(communicationDomain.getStatus())
-                .build();
+       log.info("Getting status for =[{}]", id);
+        return CommunicationDomain.toStatusResponse(getCommunicationDomain(id).getStatus());
     }
 
     @Override
-    public void postCommunication(CommunicationRequest communicationRequest) {
+    public CommunicationResponse postCommunication(CommunicationRequest communicationRequest) {
         log.info("POST communication");
+
+       CommunicationDomain communicationDomain = CommunicationDomain.toCommunicationDomain(communicationRequest);
+
+       communicationRepository.save(communicationDomain);
+
+       return CommunicationResponse.toCommunicationResponse(communicationDomain.getId());
 
     }
 
@@ -42,14 +43,13 @@ public class CommunicationServiceImpl implements CommunicationService {
     public void deleteCommunication(UUID id) {
         log.info("DELETE communication");
 
-        CommunicationDomain communicationDomain = getCommunicationDomain(id);
+       final CommunicationDomain communicationDomain = getCommunicationDomain(id);
 
         validateStatus(communicationDomain);
 
         communicationDomain.setStatus(StatusEnum.CANCELLED);
 
         communicationRepository.save(communicationDomain);
-
     }
 
     public CommunicationDomain getCommunicationDomain(final UUID id) {
@@ -62,8 +62,5 @@ public class CommunicationServiceImpl implements CommunicationService {
             log.info("Communications already {}", StatusEnum.CANCELLED);
             throw new IllegalArgumentException("Communications already CANCELLED for id =[{}] " +  communicationDomain.getId());
         }
-
     }
-
-
 }

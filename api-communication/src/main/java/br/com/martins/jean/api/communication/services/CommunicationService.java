@@ -10,7 +10,7 @@ public interface CommunicationService {
 
     StatusResponse getStatusCommunication(UUID id);
 
-    void postCommunication(CommunicationRequest communicationRequest);
+    CommunicationResponse postCommunication(CommunicationRequest communicationRequest);
 
     void deleteCommunication(UUID id);
 
