@@ -2,7 +2,7 @@ package br.com.martins.jean.api.communication.services.impl;
 
 import br.com.martins.jean.api.communication.domain.CommunicationDomain;
 import br.com.martins.jean.api.communication.enumerators.StatusEnum;
-import br.com.martins.jean.api.communication.exceptions.MessageError;
+import br.com.martins.jean.api.communication.exceptions.ObjectNotFoundException;
 import br.com.martins.jean.api.communication.interfaces.json.request.CommunicationRequest;
 import br.com.martins.jean.api.communication.interfaces.json.response.CommunicationResponse;
 import br.com.martins.jean.api.communication.interfaces.json.response.StatusResponse;
@@ -19,8 +19,6 @@ import java.util.UUID;
 @Slf4j
 public class CommunicationServiceImpl implements CommunicationService {
     private final CommunicationRepository communicationRepository;
-    private final MessageError messageError;
-
     @Override
     public StatusResponse getStatusCommunication(UUID id) {
        log.info("Getting status for =[{}]", id);
@@ -54,7 +52,7 @@ public class CommunicationServiceImpl implements CommunicationService {
 
     public CommunicationDomain getCommunicationDomain(final UUID id) {
       return communicationRepository.findById(id.toString())
-            .orElseThrow(() -> new IllegalArgumentException("CommunicationDomain not found by: " +  id));
+            .orElseThrow(() -> new ObjectNotFoundException("Communication not found! CommunicationId: " + id ));
     }
 
     private void validateStatus(CommunicationDomain communicationDomain) {

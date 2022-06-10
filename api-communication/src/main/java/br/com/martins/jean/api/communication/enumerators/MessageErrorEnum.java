@@ -4,7 +4,6 @@ public enum MessageErrorEnum {
 
     COMMUNICATION_NOT_FOUND("404.001", "Communication not found.");
 
-
     private final String code;
     private final String description;
 
@@ -19,10 +18,5 @@ public enum MessageErrorEnum {
 
     public String getCode() {
         return code;
-    }
-
-    @Override
-    public String toString() {
-        return code + ": " + description;
     }
 }
