@@ -18,5 +18,14 @@ public class ResourceExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
+    @ExceptionHandler(UnprocessableEntityException.class)
+    public ResponseEntity<StandardError> unprocessableEntityException(UnprocessableEntityException ex,
+                                                                 HttpServletRequest request) {
+
+        StandardError error = new StandardError(HttpStatus.UNPROCESSABLE_ENTITY.value(), ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(error);
+    }
+
 
 }

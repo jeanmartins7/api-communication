@@ -3,6 +3,7 @@ package br.com.martins.jean.api.communication.services.impl;
 import br.com.martins.jean.api.communication.domain.CommunicationDomain;
 import br.com.martins.jean.api.communication.enumerators.StatusEnum;
 import br.com.martins.jean.api.communication.exceptions.ObjectNotFoundException;
+import br.com.martins.jean.api.communication.exceptions.UnprocessableEntityException;
 import br.com.martins.jean.api.communication.interfaces.json.request.CommunicationRequest;
 import br.com.martins.jean.api.communication.interfaces.json.response.CommunicationResponse;
 import br.com.martins.jean.api.communication.interfaces.json.response.StatusResponse;
@@ -13,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+
+import static org.springframework.web.client.HttpClientErrorException.UnprocessableEntity;
 
 @Service
 @RequiredArgsConstructor
@@ -52,13 +55,14 @@ public class CommunicationServiceImpl implements CommunicationService {
 
     public CommunicationDomain getCommunicationDomain(final UUID id) {
       return communicationRepository.findById(id.toString())
-            .orElseThrow(() -> new ObjectNotFoundException("Communication not found! CommunicationId: " + id ));
+            .orElseThrow(() -> new ObjectNotFoundException(String.format("Communication not found for CommunicationId = %s " , id )));
     }
 
-    private void validateStatus(CommunicationDomain communicationDomain) {
-        if (StatusEnum.CANCELLED.equals(communicationDomain.getStatus())){
+    private void validateStatus(CommunicationDomain communicationDomain) throws UnprocessableEntity {
+        if (StatusEnum.CANCELLED.equals(communicationDomain.getStatus())) {
             log.info("Communications already {}", StatusEnum.CANCELLED);
-            throw new IllegalArgumentException("Communications already CANCELLED for id =[{}] " +  communicationDomain.getId());
+            throw new UnprocessableEntityException(String.format("Communication already CANCELLED for CommunicationId = %s", communicationDomain.getId()));
+
         }
     }
 }
