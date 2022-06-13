@@ -34,9 +34,7 @@ public class CommunicationServiceImpl implements CommunicationService {
 
        CommunicationDomain communicationDomain = CommunicationDomain.toCommunicationDomain(communicationRequest);
 
-       communicationRepository.save(communicationDomain);
-
-       return CommunicationResponse.toCommunicationResponse(communicationDomain.getId());
+       return CommunicationResponse.toCommunicationResponse(communicationRepository.save(communicationDomain).getId());
 
     }
 

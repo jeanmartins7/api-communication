@@ -11,7 +11,6 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.UUID;
 
 @Data
 @Builder
@@ -50,7 +49,7 @@ public class CommunicationDomain extends AuditDomain{
 
     public static CommunicationDomain toCommunicationDomain(CommunicationRequest communicationRequest){
         return CommunicationDomain.builder()
-                .id(UUID.randomUUID().toString())
+                .id(null)
                 .message(communicationRequest.getMessage())
                 .contactTypeEnum(communicationRequest.getRecipient().getContactTypeEnum())
                 .deviceCommunication(communicationRequest.getRecipient().getDeviceCommunication())

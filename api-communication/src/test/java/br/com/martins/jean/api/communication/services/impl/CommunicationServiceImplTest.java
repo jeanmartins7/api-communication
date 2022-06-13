@@ -6,7 +6,6 @@ import br.com.martins.jean.api.communication.enumerators.StatusEnum;
 import br.com.martins.jean.api.communication.exceptions.ObjectNotFoundException;
 import br.com.martins.jean.api.communication.exceptions.UnprocessableEntityException;
 import br.com.martins.jean.api.communication.interfaces.json.request.CommunicationRequest;
-import br.com.martins.jean.api.communication.interfaces.json.response.CommunicationResponse;
 import br.com.martins.jean.api.communication.interfaces.json.response.StatusResponse;
 import br.com.martins.jean.api.communication.interfaces.json.vo.DateTime;
 import br.com.martins.jean.api.communication.interfaces.json.vo.Recipient;
@@ -26,6 +25,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -79,17 +79,12 @@ class CommunicationServiceImplTest {
     @Test
     void postCommunicationSuccessfully() {
 
-        CommunicationResponse communicationResponse = communicationService.postCommunication(COMMUNICATIONRQUEST);
+        when(communicationRepository.save(any())).thenReturn(COMMUNICATION);
 
-        ArgumentCaptor<CommunicationDomain> captor = ArgumentCaptor
-                .forClass(CommunicationDomain.class);
-        verify(communicationRepository).save(captor.capture());
+        var responsePostCommunication= communicationService.postCommunication(COMMUNICATIONRQUEST);
 
-        CommunicationDomain communicationDomain = captor.getValue();
-
-        assertNotNull(communicationResponse);
-        assertNotNull(communicationDomain);
-        assertEquals(communicationDomain.getId(), communicationResponse.getId());
+        assertNotNull(responsePostCommunication);
+        assertEquals(COMMUNICATION.getId(), responsePostCommunication.getId());
     }
 
     @DisplayName("Should DELETE Communication Successfully")
