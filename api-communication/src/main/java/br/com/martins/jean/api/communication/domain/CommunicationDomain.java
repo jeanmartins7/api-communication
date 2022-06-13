@@ -50,7 +50,7 @@ public class CommunicationDomain extends AuditDomain{
 
     public static CommunicationDomain toCommunicationDomain(CommunicationRequest communicationRequest){
         return CommunicationDomain.builder()
-                .id(UUID.randomUUID().toString())
+                .id(null)
                 .message(communicationRequest.getMessage())
                 .contactTypeEnum(communicationRequest.getRecipient().getContactTypeEnum())
                 .deviceCommunication(communicationRequest.getRecipient().getDeviceCommunication())
