@@ -5,12 +5,14 @@ import br.com.martins.jean.api.communication.interfaces.json.response.Communicat
 import br.com.martins.jean.api.communication.interfaces.json.response.StatusResponse;
 import br.com.martins.jean.api.communication.services.CommunicationService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+import static org.springframework.http.ResponseEntity.*;
 import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
@@ -31,7 +33,7 @@ public class CommunicationController {
 
         CommunicationResponse communicationResponse = communicationService.postCommunication(communicationRequest);
 
-        return ok(communicationResponse);
+        return status(HttpStatus.ACCEPTED).body(communicationResponse);
     }
 
     @DeleteMapping("/{id}")
@@ -39,8 +41,7 @@ public class CommunicationController {
 
         communicationService.deleteCommunication(id);
 
-        return ResponseEntity
-                .noContent()
+        return noContent()
                 .build();
     }
 

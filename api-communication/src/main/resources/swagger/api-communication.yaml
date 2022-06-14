@@ -1,0 +1,195 @@
+openapi: 3.0.0
+servers:
+  - description: SwaggerHub API
+    url: http://localhost:8090/api/v1
+info:
+  description: api to schedule a communication
+  version: "1.0.0"
+  title: API - COMMUNICATIONS
+  contact:
+    email: jeanmarcel8@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+paths:
+  /communications/:
+    post:
+      tags:
+        - communications
+      summary: Add a new schedule a communication
+      description: |
+         Add a new schedule a communication
+      operationId: addCommunication
+      parameters:
+      - in: body
+        name: "body"
+        description: "Request"
+        required: true
+        schema:
+                  $ref: '#/components/schemas/CommunicationRequest'
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CommunicationResponse'
+  /communications/{communicationId}:                  
+    get:
+      tags:
+        - communications
+      summary: searche communication
+      operationId: searchCommunication
+      description: |
+        delete communication
+      parameters:
+        - in: query
+          name: communicationId
+          description: pass an search UUID for looking up communication
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Status'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiErrorNotFound'
+    delete:
+      tags:
+        - communications
+      summary: delete communication
+      operationId: deleteCommunication
+      description: |
+        By passing in the appropriate options, you can search for
+        status communication
+      parameters:
+        - in: query
+          name: communicationId
+          description: pass a UUID for detele communication
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: ""
+
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiErrorUnprocessable'
+components:
+  schemas:
+    CommunicationRequest:
+      type: object
+      required:
+        - message
+        - recipient
+        - dateTime
+      properties:
+        message:
+          type: string
+          format: string
+          example: String
+        recipient:
+          $ref: '#/components/schemas/recipient'
+        dateTime:
+          $ref: '#/components/schemas/dateTime'
+    CommunicationResponse:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 112243c7-a497-473f-b8c0-fb6061f1aa9e
+    recipient :
+      type: object
+      required:
+        - contactTypeEnum
+        - deviceCommunication
+      properties:
+        contactTypeEnum:
+          $ref: '#/components/schemas/contactTypeEnum'
+        deviceCommunication:
+          type: string
+          example: test@test.com
+    contactTypeEnum:
+      required:
+        - contactTypeEnum
+      properties:
+        contactTypeEnum:
+          type: string
+          enum: 
+            - WHATSAPP, EMAIL, SMS, PUSH
+          example: EMAIL
+      type: object
+    dateTime:
+      required:
+        - date
+        - time
+      properties:
+        date:
+          type: "LocalDate"
+          example: "2023-06-09"
+        time:
+          type: "LocalTime"
+          example: "16:02:12"
+      type: object
+    Status:
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum: 
+            - SENT, SEND, CANCELLED
+          example: SENT
+      type: object
+    ApiErrorNotFound:
+      required:
+        - status
+        - message
+      properties:
+        status:
+          type: string
+          format: string
+          example: 404
+        message:
+          type: string
+          format: string
+          example: Communication not found for CommunicationId = 6389ccf1-e4d1-4581-a8d2-5c885b447981 
+      type: object
+    ApiErrorUnprocessable :
+      required:
+        - status
+        - message
+      properties:
+        status:
+          type: string
+          format: string
+          example: 422
+        message:
+          type: string
+          format: string
+          example: "Communication already CANCELLED for CommunicationId = 6389ccf1-e4d1-4581-a8d2-5c885b44798c"
+      type: object
+
