@@ -13,7 +13,8 @@ The main focus of the unit tests was to test the service implementation classes,
 ## Swagger
 Swagger in:
 
-api-communication/api-communication/src/main/resources/swagger/
+`$ cd api-communication/api-communication/src/main/resources/swagger/`
+
 
 ## Author
 Jean Martins
