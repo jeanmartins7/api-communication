@@ -20,7 +20,6 @@ import java.time.LocalTime;
 @Table(name = "tab_communications")
 public class CommunicationDomain extends AuditDomain{
 
-    //test
 
     @Id
     @Column(name = "tx_id_communication")
